@@ -7,6 +7,7 @@ export default () => {
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
   const [error, setError] = useState(null)
+  const [emptyFields, setEmptyFields] = useState([]);
   const dispatch = useDispatch();
 
 
@@ -26,6 +27,7 @@ export default () => {
 
     if (!response.ok) {
       setError(json.error)
+      setEmptyFields(json.emptyFields)
     }
     if (response.ok) {
       setError(null)
@@ -33,6 +35,7 @@ export default () => {
       setLoad('')
       setReps('')
       dispatch(addWorkout(json))
+      setEmptyFields([])
     }
 
   }
@@ -46,6 +49,7 @@ export default () => {
         type="text"
         onChange={(e) => setTitle(e.target.value)}
         value={title}
+        className={emptyFields.includes('title') ? 'error' : ''}
       />
 
       <label>Load (in kg):</label>
@@ -53,6 +57,7 @@ export default () => {
         type="number"
         onChange={(e) => setLoad(e.target.value)}
         value={load}
+        className={emptyFields.includes('load') ? 'error' : ''}
       />
 
       <label>Number of Reps:</label>
@@ -60,6 +65,7 @@ export default () => {
         type="number"
         onChange={(e) => setReps(e.target.value)}
         value={reps}
+        className={emptyFields.includes('reps') ? 'error' : ''}
       />
 
       <button>Add Workout</button>
