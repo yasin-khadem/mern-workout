@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addWorkout } from '../slices/workoutSlice'
 
 export default () => {
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
   const [error, setError] = useState(null)
+  const dispatch = useDispatch();
 
 
   const handleSubmit = async (e) => {
@@ -23,14 +26,13 @@ export default () => {
 
     if (!response.ok) {
       setError(json.error)
-      console.log(json.error)
     }
     if (response.ok) {
       setError(null)
       setTitle('')
       setLoad('')
       setReps('')
-      console.log('new workout added:', json)
+      dispatch(addWorkout(json))
     }
 
   }
